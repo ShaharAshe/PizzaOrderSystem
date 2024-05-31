@@ -11,7 +11,6 @@ public class IngredientsRepo {
         ingredientsMap.put("Mushroom","Mushroom.png");
         ingredientsMap.put("Olive","Olive.png");
         ingredientsMap.put("Pineapple","Pineapple.png");
-        ingredientsMap.put("PizzaBase","PizzaBase.png");
         ingredientsMap.put("Tomato","Tomato.png");
     }
 

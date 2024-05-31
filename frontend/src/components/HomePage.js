@@ -1,6 +1,5 @@
-import {Button, Col, Row} from "react-bootstrap";
+import { Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
 
 function HomePage(){
     return(

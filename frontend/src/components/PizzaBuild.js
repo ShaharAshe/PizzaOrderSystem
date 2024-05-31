@@ -1,33 +1,57 @@
-import {Button, Col, Image, Row} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {forEach} from "react-bootstrap/ElementChildren";
+import {Button, Col, Row} from "react-bootstrap";
+import {useContext, useEffect, useState} from "react";
+import {FormInputsContext} from "./PizzaOrderRouteTable";
 
 function PizzaBuild(props){
     const [ingredientsNames, setIngredientsNames] = useState([]);
-    const [ingredientsPhotos, setIngredientsPhotos] = useState([]);
     const [ingredientsLst, setIngredientsLst] = useState([]);
+    const [inputs, setInputs] = useContext(FormInputsContext);
+
+    const handleChange = (event) => {
+        const name = event.target.name.trim();
+        let value = event.target.value.trim().toLowerCase();
+
+        setInputs(values => ({...values, [name]: value}))
+        console.log(inputs);
+    }
+
     useEffect(() => {
+        console.log("inputs",inputs)
         fetch("/new-pizza", {method:'POST'})
             .then(res=>res.json())
             .then(data=>{
                 console.log(data);
                 let tempLst = []
                 let i = 0
-                Object.keys(data).map(d =>{
-                    console.log(d)
-                    setIngredientsNames([...ingredientsNames, d])
-                    setIngredientsPhotos([...ingredientsPhotos, data[d]])
+                if(Object.keys(data).length)
+                {
                     tempLst.push(
                         <Col key={i++} className="text-center" xs={12}>
-                            <div className="form-check" style={{ display: 'table'}}>
-                                <label className="form-check-label" htmlFor={i.toString()}>{d}</label>
-                                <input className="form-check-input" type="checkbox" id={i.toString()}/>
+                            <p>Choose two ingredients for pizza</p>
+                        </Col>
+                    );
+                }
+                Object.keys(data).map(d =>{
+                    setIngredientsNames([...ingredientsNames, d])
+                    console.log(12/Object.keys(data).length)
+                    tempLst.push(
+                        <Col key={i++} className="text-center" xs={12/Object.keys(data).length}>
+                            <div className="form-check">
+                                <label className="form-check-label" htmlFor={i.toString()}>
+                                    <input
+                                        name="ingredientes"
+                                        checked={inputs.ingredientes[d]}
+                                        onChange={handleChange}
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id={i.toString()}/>{d}
+                                </label>
                             </div>
                         </Col>
                     )
                 })
-                setIngredientsLst(tempLst)
+                tempLst = <Row key={i++} className="text-center">{tempLst}</Row>;
+                setIngredientsLst((ingredientsLst) => tempLst)
             })
     }, []);
 
@@ -35,25 +59,16 @@ function PizzaBuild(props){
         <>
             <Row>
                 <Col>
-                    <form action="#" onSubmit={props.handleSubmit}>
-                        <Row className="text-center">
-                            {ingredientsLst}
-                        </Row>
+                    <form action="#">
+                        {/* Ingredients */}
+                        {ingredientsLst}
                         <br/>
                         <Row>
-                            <Col className="text-center" xs={12}>
+                            <Col className="text-center">
                                 <Button variant="primary" type="submit">Next</Button>
                             </Col>
                         </Row>
                     </form>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    {/*<div style={{display:"flex"}}>*/}
-                    {/*    <Image src={'/PizzaBase.png'} alt="PizzaBase" style={{zIndex:2,position:"absolute"}} fluid />*/}
-                    {/*    <Image src={'/Basil.png'} alt="PizzaBase" style={{zIndex:3,position:"absolute"}} fluid />*/}
-                    {/*</div>*/}
                 </Col>
             </Row>
         </>
