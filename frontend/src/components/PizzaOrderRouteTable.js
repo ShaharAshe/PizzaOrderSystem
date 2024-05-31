@@ -5,12 +5,30 @@ import CheckPizzaCode from "./CheckPizzaCode";
 import Header from "./Header";
 import React, {createContext, useEffect, useState} from "react";
 import OrderPizzaForm from "./OrderPizzaForm";
-import {Col, Row} from "react-bootstrap";
 
 export const FormInputsContext = createContext(null);
 
 function PizzaOrderRouteTable(){
     const [ingredientesInfo, setIngredientesInfo] = useState({})
+    const [infoInputs, setInfoInputs] = useState({
+        firstName:"",
+        lastName:"",
+        street:"",
+        house:"",
+        number:"",
+        city:"",
+        phone:""
+    });
+    const [alerts, setAlerts] = useState({
+        ingredients:false,
+        firstName:false,
+        lastName:false,
+        street:false,
+        house:false,
+        number:false,
+        city:false,
+        phone:false
+    })
     useEffect(() => {
         fetch("/new-pizza", {method:'POST'})
             .then(res=>res.json())
@@ -23,13 +41,12 @@ function PizzaOrderRouteTable(){
                 })
             })
     }, []);
-    const [infoInputs, setInfoInputs] = useState({firstName:"", lastName:"", street:"", house:"",number:"",city:"",phone:""});
 
     return (
         <>
             <BrowserRouter>
                 <Header/>
-                <FormInputsContext.Provider value={[infoInputs, setInfoInputs]}>
+                <FormInputsContext.Provider value={[infoInputs, setInfoInputs, ingredientesInfo, setIngredientesInfo, alerts, setAlerts]}>
                 <Routes>
                     <Route path="/" element={<HomePage />}/>
                     <Route path="/build" element={<PizzaBuild/>}/>
