@@ -67,6 +67,36 @@ function OrderPizzaForm(){
             setAlerts(values => ({...values, phone:true}));
         else
             setAlerts(values => ({...values, phone:false}));
+
+        if(!(Object.values(alerts).some(alert => alert))){
+            let selectedIngredients = {};
+            Object.keys(ingredientesInfo).forEach(key => {
+                if (ingredientesInfo[key]) {
+                    selectedIngredients = {...selectedIngredients, [key]: ingredientesInfo[key]};
+                }
+            });
+
+            const orderData = {
+                ingredients: Object.keys(selectedIngredients),
+                ...infoInputs
+            };
+
+            fetch("/order", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+                .then(res => res.json())
+                .then(response => {
+                    console.log('Order response:', response);
+                    navigate("/");
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     }
 
     return(
