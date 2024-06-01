@@ -9,7 +9,7 @@ function HomePage(){
                     <Link className="btn btn-primary" to="/build">New Order</Link>
                 </Col>
                 <Col xs={6}>
-                    <Link className="btn btn-primary" to="/prevOrder">order by<br/> prev order code</Link>
+                    <Link className="btn btn-primary" to="/prevOrder">Check order</Link>
                 </Col>
             </Row>
             <br/>

@@ -11,9 +11,9 @@ public class OrderData {
     private String number;
     private String city;
     private String phone;
+    private int price;
 
-    public OrderData() {
-    }
+    public OrderData() {}
 
     public OrderData(ArrayList<String> ingredients,
                      String firstName,
@@ -22,7 +22,8 @@ public class OrderData {
                      String house,
                      String number,
                      String city,
-                     String phone) {
+                     String phone,
+                     int price) {
         super();
         this.ingredients = ingredients;
         this.firstName = firstName;
@@ -32,6 +33,7 @@ public class OrderData {
         this.number = number;
         this.city = city;
         this.phone = phone;
+        this.price = price;
     }
 
     public ArrayList<String> getIngredients(){
@@ -90,8 +92,15 @@ public class OrderData {
         this.phone = phone;
     }
 
+    public int getPrice(){
+        return this.price;
+    }
+    public void setPrice(int price){
+        this.price = price;
+    }
+
     @Override
     public String toString() {
-        return "OrderFormData [ingredients = "+this.ingredients+", firstName = "+this.firstName+", lastName = "+this.lastName+", street = "+this.street+", house = "+this.house+", number = "+this.number+", city = "+this.city+", phone = "+this.phone+"]";
+        return "OrderFormData [ingredients = "+this.ingredients+", firstName = "+this.firstName+", lastName = "+this.lastName+", street = "+this.street+", house = "+this.house+", number = "+this.number+", city = "+this.city+", phone = "+this.phone+", price = "+this.price+"]";
     }
 }

@@ -6,31 +6,29 @@ import {Navigate, useNavigate} from "react-router-dom";
 function PizzaBuild(props){
     const [ingredientsNames, setIngredientsNames] = useState([]);
     const [ingredientsLst, setIngredientsLst] = useState([]);
-    const [infoInputs, setInfoInputs, ingredientesInfo, setIngredientesInfo, alerts, setAlerts] = useContext(FormInputsContext);
-    const [countClicked, setCountClicked] = useState(0)
+    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
     const navigate = useNavigate();
 
     useEffect(() => {
-        setCountClicked(0);
-        let tempLst = []
-
-        if(!Object.keys(ingredientesInfo).length)
+        if(!Object.keys(stateIngredientes?.names).length)
             navigate("/")
+        let tempLst = []
 
         tempLst.push(
             <Col key={0} className="text-center" xs={12}>
-                <p>Choose two ingredients for pizza</p>
+                <p>Choose at least two pizza ingredients</p>
             </Col>
         );
-        Object.keys(ingredientesInfo).map((d,index) =>{
+
+        Object.keys(stateIngredientes?.names).map((d,index) =>{
             setIngredientsNames([...ingredientsNames, d])
             tempLst.push(
-                <Col key={index+2} className="text-center" xs={12/Object.keys(ingredientesInfo).length}>
+                <Col key={index+3} className="text-center" xs={12/Object.keys(stateIngredientes.names).length}>
                     <div className="form-check">
                         <label className="form-check-label" htmlFor={(index+2).toString()}>
                             <input
                                 name="ingredientes"
-                                checked={ingredientesInfo[d]}
+                                checked={stateIngredientes.names[d]}
                                 onChange={()=> handleChange(d)}
                                 className="form-check-input"
                                 type="checkbox"
@@ -39,20 +37,35 @@ function PizzaBuild(props){
                     </div>
                 </Col>
             );
-            if(ingredientesInfo[d])
-                setCountClicked(countClicked=>countClicked+1);
         });
+
+        tempLst.push(
+            <Col key={2} className="text-center" xs={12}>
+                <br/>
+                <p>Each ingredient costs 3₪</p>
+            </Col>
+        );
         tempLst = <Row key={1} className="text-center">{tempLst}</Row>;
         setIngredientsLst((ingredientsLst) => tempLst)
-    }, [ingredientesInfo]);
+    }, [stateIngredientes]);
 
     const handleChange = (name) => {
-        setIngredientesInfo(prevState => ({...prevState, [name]: !prevState[name]}));
+        if(stateIngredientes.names[name]) {
+            dispatchPrice({type: 'DECREMENT'})
+            dispatchIngredientes({ type: 'DECREMENT_C'});
+        }
+        else{
+            dispatchPrice({ type: 'INCREMENT' })
+            dispatchIngredientes({ type: 'INCREMENT_C'});
+        }
+
+        dispatchIngredientes({ type: 'INGREDIENT', payload: name });
     }
 
     const handleSubmit = (event) => {
-        event .preventDefault();
-        if(countClicked >=2) {
+        event.preventDefault();
+        console.log("stateIngredientes.count",stateIngredientes.count)
+        if(stateIngredientes.count >=2) {
             navigate("/your-info-order");
             setAlerts(values => ({...values, ingredients:false}));
         }
@@ -62,6 +75,11 @@ function PizzaBuild(props){
 
     return(
         <>
+            <Row>
+                <h2>
+                    Total price: {statePrice.price}₪
+                </h2>
+            </Row>
             <Row>
                 <Col>
                     <form action="#" onSubmit={handleSubmit}>

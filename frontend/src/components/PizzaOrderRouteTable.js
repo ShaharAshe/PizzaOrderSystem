@@ -3,13 +3,16 @@ import HomePage from "./HomePage";
 import PizzaBuild from "./PizzaBuild";
 import CheckPizzaCode from "./CheckPizzaCode";
 import Header from "./Header";
-import React, {createContext, useEffect, useState} from "react";
+import React, {createContext, useEffect, useReducer, useState} from "react";
 import OrderPizzaForm from "./OrderPizzaForm";
+import {PriceReducer} from "./PriceReducer";
+import {IngredientsReducer} from "./IngredientsReducer";
 
 export const FormInputsContext = createContext(null);
 
 function PizzaOrderRouteTable(){
-    const [ingredientesInfo, setIngredientesInfo] = useState({})
+    const [statePrice, dispatchPrice] = useReducer(PriceReducer, { price:55 });
+    const [stateIngredientes, dispatchIngredientes] = useReducer(IngredientsReducer,{names:{}, count:0})
     const [infoInputs, setInfoInputs] = useState({
         firstName:"",
         lastName:"",
@@ -30,15 +33,16 @@ function PizzaOrderRouteTable(){
         phone:false
     })
     useEffect(() => {
+        let tempIngredientes = {}
         fetch("/new-pizza", {method:'POST'})
             .then(res=>res.json())
             .then(data=>{
                 Object.keys(data).map(d =>{
                     const key = d;
-                    let value = (ingredientesInfo?.key) ?? false;
-
-                    setIngredientesInfo(values => ({...values, [key]: value}))
+                    let value = (stateIngredientes?.names?.key) ?? false;
+                    tempIngredientes={...tempIngredientes, [key]: value};
                 })
+                dispatchIngredientes({ type: 'INIT', payload: tempIngredientes });
             })
     }, []);
 
@@ -46,7 +50,7 @@ function PizzaOrderRouteTable(){
         <>
             <BrowserRouter>
                 <Header/>
-                <FormInputsContext.Provider value={[infoInputs, setInfoInputs, ingredientesInfo, setIngredientesInfo, alerts, setAlerts]}>
+                <FormInputsContext.Provider value={[infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice]}>
                 <Routes>
                     <Route path="/" element={<HomePage />}/>
                     <Route path="/build" element={<PizzaBuild/>}/>

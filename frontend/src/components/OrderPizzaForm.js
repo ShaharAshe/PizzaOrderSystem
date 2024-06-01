@@ -8,14 +8,12 @@ function OrderPizzaForm(){
     const Address_pattern = /^[a-zA-Z0-9]+$/;
     const number_pattern = /^[0-9]+$/;
 
-    const [infoInputs, setInfoInputs, ingredientesInfo, setIngredientesInfo, alerts, setAlerts] = useContext(FormInputsContext);
-    const [nameAlert, setNameAlert] = useState(false);
+    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
 
     const navigate = useNavigate();
-    console.log("Object.keys(ingredientesInfo).length",Object.keys(ingredientesInfo).length)
 
     useEffect(() => {
-        if (!Object.keys(ingredientesInfo).length)
+        if (!stateIngredientes.count)
             navigate("/")
     }, []);
 
@@ -70,15 +68,16 @@ function OrderPizzaForm(){
 
         if(!(Object.values(alerts).some(alert => alert))){
             let selectedIngredients = {};
-            Object.keys(ingredientesInfo).forEach(key => {
-                if (ingredientesInfo[key]) {
-                    selectedIngredients = {...selectedIngredients, [key]: ingredientesInfo[key]};
+            Object.keys(stateIngredientes.names).forEach(key => {
+                if (stateIngredientes.names[key]) {
+                    selectedIngredients = {...selectedIngredients, [key]: stateIngredientes.names[key]};
                 }
             });
 
             const orderData = {
                 ingredients: Object.keys(selectedIngredients),
-                ...infoInputs
+                ...infoInputs,
+                price: statePrice.price
             };
 
             fetch("/order", {
@@ -105,6 +104,12 @@ function OrderPizzaForm(){
                 <Col>
                     <Link className="btn btn-primary" to="/build">Back</Link>
                 </Col>
+            </Row>
+            <br/>
+            <Row>
+                <h2>
+                    Total price: {statePrice.price}₪
+                </h2>
             </Row>
             <Row>
                 <Col>
@@ -304,6 +309,7 @@ function OrderPizzaForm(){
                     </form>
                 </Col>
             </Row>
+            <br/>
         </>
     );
 }
