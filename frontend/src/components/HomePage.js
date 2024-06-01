@@ -1,14 +1,34 @@
 import { Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import {useContext} from "react";
+import {FormInputsContext} from "./PizzaOrderRouteTable";
 
 function HomePage(){
+    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
+    const grid = () => {
+        if(stateIngredientes.count)
+            return 4
+        return 6
+    }
+    const initAllData = ()=> {
+        dispatchIngredientes({ type: 'INIT'});
+        dispatchPrice({ type: 'INIT'});
+    }
+
     return(
         <>
             <Row>
-                <Col xs={6}>
-                    <Link className="btn btn-primary" to="/build">New Order</Link>
+                <Col xs={grid()}>
+                    <Link className="btn btn-primary" to="/build" onClick={initAllData}>New Order</Link>
                 </Col>
-                <Col xs={6}>
+                {stateIngredientes.count?
+                    <Col xs={grid()}>
+                        <Link className="btn btn-primary" to="/build">Resume Order</Link>
+                    </Col>
+                    :
+                    ""
+                }
+                <Col xs={grid()}>
                     <Link className="btn btn-primary" to="/prevOrder">Check order</Link>
                 </Col>
             </Row>

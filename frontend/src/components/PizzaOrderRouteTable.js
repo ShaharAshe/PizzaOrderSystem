@@ -42,7 +42,7 @@ function PizzaOrderRouteTable(){
                     let value = (stateIngredientes?.names?.key) ?? false;
                     tempIngredientes={...tempIngredientes, [key]: value};
                 })
-                dispatchIngredientes({ type: 'INIT', payload: tempIngredientes });
+                dispatchIngredientes({ type: 'INIT_NAMES', payload: tempIngredientes });
             })
     }, []);
 

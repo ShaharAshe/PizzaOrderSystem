@@ -52,11 +52,9 @@ function PizzaBuild(props){
     const handleChange = (name) => {
         if(stateIngredientes.names[name]) {
             dispatchPrice({type: 'DECREMENT'})
-            dispatchIngredientes({ type: 'DECREMENT_C'});
         }
         else{
             dispatchPrice({ type: 'INCREMENT' })
-            dispatchIngredientes({ type: 'INCREMENT_C'});
         }
 
         dispatchIngredientes({ type: 'INGREDIENT', payload: name });

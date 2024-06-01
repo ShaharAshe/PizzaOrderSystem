@@ -3,14 +3,18 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 
+
 function OrderPizzaForm(){
     const Name_pattern = /^[a-zA-Z]+$/;
     const Address_pattern = /^[a-zA-Z0-9]+$/;
     const number_pattern = /^[0-9]+$/;
-
     const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
-
     const navigate = useNavigate();
+
+    const initValuse = ()=> {
+        dispatchIngredientes({ type: 'INIT'});
+        dispatchPrice({ type: 'INIT'});
+    }
 
     useEffect(() => {
         if (!stateIngredientes.count)
@@ -89,7 +93,7 @@ function OrderPizzaForm(){
             })
                 .then(res => res.json())
                 .then(response => {
-                    console.log('Order response:', response);
+                    initValuse();
                     navigate("/");
                 })
                 .catch(error => {
