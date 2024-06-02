@@ -10,6 +10,7 @@ function HomePage(){
             return 4
         return 6
     }
+
     const initAllData = ()=> {
         dispatchIngredientes({ type: 'INIT'});
         dispatchPrice({ type: 'INIT'});
@@ -29,7 +30,7 @@ function HomePage(){
                     ""
                 }
                 <Col xs={grid()}>
-                    <Link className="btn btn-primary" to="/prevOrder">Check order</Link>
+                    <Link className="btn btn-primary" to="/enter-code">Check order</Link>
                 </Col>
             </Row>
             <br/>

@@ -12,7 +12,9 @@ function OrderSummary(){
         dispatchIngredientes({ type: 'INIT'});
         dispatchPrice({ type: 'INIT'});
     }
-
+    const splitCamelCase = (str) => {
+        return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, function(str){ return str.toUpperCase(); });
+    };
     useEffect(() => {
         const tempIngredientes = Object.keys(stateIngredientes.names).map(key => {
             if (stateIngredientes.names[key])
@@ -21,24 +23,52 @@ function OrderSummary(){
         if(!Object.keys(tempIngredientes).length)
             navigate('/')
 
-        const details = Object.keys(infoInputs).map((key,index)=>{
-                return (<Col key={key} className="border border-black" xs={12}>
-                    <div>
-                        <p><b>{key}:</b></p>
-                    </div>
-                    <div>
-                        <p>{infoInputs[key].trim()}</p>
-                    </div>
-                </Col>)
-            });
-        setLabels(values => [])
-        setLabels(values => ({
-            ...values,
-            details:details,
-            ingredientes:tempIngredientes,
-            price:statePrice.price
-        }));
         initValuse();
+
+
+        fetch("/order/last", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(response => {
+                console.log("response",response)
+                const details = Object.keys(response).map((key,index)=>{
+                    if(key !== "ingredients")
+                        return (key === "orderNumber"?
+                                (<Col key={key} className="bg-info border border-warning" xs={12}>
+                                    <div>
+                                        <p><b>{splitCamelCase(key)}:</b></p>
+                                    </div>
+                                    <div>
+                                        <p>{response[key]}</p>
+                                    </div>
+                                </Col>)
+                                :
+                                (<Col key={key} className="border border-black" xs={12}>
+                                    <div>
+                                        <p><b>{splitCamelCase(key)}:</b></p>
+                                    </div>
+                                    <div>
+                                        <p>{response[key]}</p>
+                                    </div>
+                                </Col>)
+
+                            )
+                });
+                setLabels(values => [])
+                setLabels(values => ({
+                    ...values,
+                    details:details,
+                    ingredientes:tempIngredientes,
+                    price:statePrice.price
+                }));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }, []);
     return (
         <>

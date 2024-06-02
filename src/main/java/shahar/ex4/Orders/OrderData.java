@@ -1,8 +1,10 @@
 package shahar.ex4.Orders;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OrderData {
+public class OrderData implements Serializable {
+    private Long orderNumber;
     private ArrayList<String> ingredients;
     private String firstName;
     private String lastName;
@@ -11,11 +13,11 @@ public class OrderData {
     private String number;
     private String city;
     private String phone;
-    private int price;
+    private String price;
 
     public OrderData() {}
-
-    public OrderData(ArrayList<String> ingredients,
+    public OrderData(Long orderNumber,
+                     ArrayList<String> ingredients,
                      String firstName,
                      String lastName,
                      String street,
@@ -23,8 +25,19 @@ public class OrderData {
                      String number,
                      String city,
                      String phone,
-                     int price) {
-        super();
+                     String price) {
+        checkNotNull(orderNumber);
+        checkNotNull(ingredients);
+        checkNotEmpty(firstName);
+        checkNotEmpty(lastName);
+        checkNotEmpty(street);
+        checkNotEmpty(house);
+        checkNotEmpty(number);
+        checkNotEmpty(city);
+        checkNotEmpty(phone);
+        checkNotEmpty(price);
+
+        this.orderNumber = orderNumber;
         this.ingredients = ingredients;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +47,26 @@ public class OrderData {
         this.city = city;
         this.phone = phone;
         this.price = price;
+    }
+
+    private void checkNotNull(Object o) {
+        if (o == null) {
+            throw new IllegalArgumentException("Null argument");
+        }
+    }
+
+    public void checkNotEmpty(String s) {
+        if (s == null || s.isEmpty()) {
+            throw new IllegalArgumentException("Empty argument");
+        }
+    }
+
+    public Long getOrderNumber() {
+        return orderNumber;
+    }
+    public void setOrderNumber(Long orderNumber) {
+        checkNotNull(orderNumber);
+        this.orderNumber = orderNumber;
     }
 
     public ArrayList<String> getIngredients(){
@@ -92,10 +125,10 @@ public class OrderData {
         this.phone = phone;
     }
 
-    public int getPrice(){
+    public String getPrice(){
         return this.price;
     }
-    public void setPrice(int price){
+    public void setPrice(String price){
         this.price = price;
     }
 

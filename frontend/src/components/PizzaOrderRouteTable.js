@@ -8,10 +8,12 @@ import OrderPizzaForm from "./OrderPizzaForm";
 import {PriceReducer} from "./PriceReducer";
 import {IngredientsReducer} from "./IngredientsReducer";
 import OrderSummary from "./OrderSummary";
+import EnterPizzaCode from "./EnterPizzaCode";
 
 export const FormInputsContext = createContext(null);
 
 function PizzaOrderRouteTable(){
+    const [code, setCode] = useState();
     const [statePrice, dispatchPrice] = useReducer(PriceReducer, { price:55 });
     const [stateIngredientes, dispatchIngredientes] = useReducer(IngredientsReducer,{names:{}, count:0})
     const [infoInputs, setInfoInputs] = useState({
@@ -57,7 +59,8 @@ function PizzaOrderRouteTable(){
                     <Route path="/build" element={<PizzaBuild/>}/>
                     <Route path="/your-info-order" element={<OrderPizzaForm/>} />
                     <Route path="/order-summary" element={<OrderSummary/>} />
-                    <Route path="/prevOrder" element={<CheckPizzaCode/>}/>
+                    <Route path="/enter-code" element={<EnterPizzaCode code={code} updateCode={setCode}/>} />
+                    <Route path="/prevOrder" element={<CheckPizzaCode code={code} updateCode={setCode}/>}/>
                 </Routes>
                 </FormInputsContext.Provider>
             </BrowserRouter>
