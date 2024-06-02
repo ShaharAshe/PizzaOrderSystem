@@ -23,7 +23,7 @@ function PizzaBuild(props){
         Object.keys(stateIngredientes?.names).map((d,index) =>{
             setIngredientsNames([...ingredientsNames, d])
             tempLst.push(
-                <Col key={index+3} className="text-center" xs={12/Object.keys(stateIngredientes.names).length}>
+                <Col key={index+3} className="text-center" xs={12}>
                     <div className="form-check">
                         <label className="form-check-label" htmlFor={(index+2).toString()}>
                             <input
@@ -62,7 +62,6 @@ function PizzaBuild(props){
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("stateIngredientes.count",stateIngredientes.count)
         if(stateIngredientes.count >=2) {
             navigate("/your-info-order");
             setAlerts(values => ({...values, ingredients:false}));

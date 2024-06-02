@@ -7,6 +7,7 @@ import React, {createContext, useEffect, useReducer, useState} from "react";
 import OrderPizzaForm from "./OrderPizzaForm";
 import {PriceReducer} from "./PriceReducer";
 import {IngredientsReducer} from "./IngredientsReducer";
+import OrderSummary from "./OrderSummary";
 
 export const FormInputsContext = createContext(null);
 
@@ -55,6 +56,7 @@ function PizzaOrderRouteTable(){
                     <Route path="/" element={<HomePage />}/>
                     <Route path="/build" element={<PizzaBuild/>}/>
                     <Route path="/your-info-order" element={<OrderPizzaForm/>} />
+                    <Route path="/order-summary" element={<OrderSummary/>} />
                     <Route path="/prevOrder" element={<CheckPizzaCode/>}/>
                 </Routes>
                 </FormInputsContext.Provider>

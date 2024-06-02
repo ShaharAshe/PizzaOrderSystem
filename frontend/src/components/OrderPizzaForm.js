@@ -3,18 +3,12 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 
-
 function OrderPizzaForm(){
     const Name_pattern = /^[a-zA-Z]+$/;
     const Address_pattern = /^[a-zA-Z0-9]+$/;
     const number_pattern = /^[0-9]+$/;
     const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
     const navigate = useNavigate();
-
-    const initValuse = ()=> {
-        dispatchIngredientes({ type: 'INIT'});
-        dispatchPrice({ type: 'INIT'});
-    }
 
     useEffect(() => {
         if (!stateIngredientes.count)
@@ -26,51 +20,69 @@ function OrderPizzaForm(){
         let value = event.target.value.trim().toLowerCase();
 
         setInfoInputs(values => ({...values, [name]: value}))
-        console.log(infoInputs);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        let alert = false;
         // Check Name
-        if (!Name_pattern.test(infoInputs.firstName.trim()))
-            setAlerts(values => ({...values, firstName:true}));
+        if (!Name_pattern.test(infoInputs.firstName.trim())) {
+            setAlerts(values => ({...values, firstName: true}));
+            alert = true;
+        }
         else
             setAlerts(values => ({...values, firstName:false}));
 
-        if (!Name_pattern.test(infoInputs.lastName.trim()))
-            setAlerts(values => ({...values, lastName:true}));
+        if (!Name_pattern.test(infoInputs.lastName.trim())) {
+            setAlerts(values => ({...values, lastName: true}));
+            alert = true;
+        }
         else
             setAlerts(values => ({...values, lastName:false}));
 
 
         // Check Address
-        if (!Address_pattern.test(infoInputs.street.trim()))
-            setAlerts(values => ({...values, street:true}));
+        if (!Address_pattern.test(infoInputs.street.trim())) {
+            setAlerts(values => ({...values, street: true}));
+            alert = true;
+        }
         else
-            setAlerts(values => ({...values, street:false}));
+            setAlerts(values => ({...values, street: false}));
 
-        if (!Address_pattern.test(infoInputs.house.trim()))
-            setAlerts(values => ({...values, house:true}));
+
+        if (!Address_pattern.test(infoInputs.house.trim())) {
+            setAlerts(values => ({...values, house: true}));
+            alert = true;
+        }
         else
-            setAlerts(values => ({...values, house:false}));
+            setAlerts(values => ({...values, house: false}));
 
-        if (!number_pattern.test(infoInputs.number.trim()))
-            setAlerts(values => ({...values, number:true}));
+
+        if (!number_pattern.test(infoInputs.number.trim())) {
+            setAlerts(values => ({...values, number: true}));
+            alert = true;
+        }
         else
-            setAlerts(values => ({...values, number:false}));
+            setAlerts(values => ({...values, number: false}));
 
-        if (!Name_pattern.test(infoInputs.city.trim()))
-            setAlerts(values => ({...values, city:true}));
+
+        if (!Name_pattern.test(infoInputs.city.trim())) {
+            setAlerts(values => ({...values, city: true}));
+            alert = true;
+        }
         else
-            setAlerts(values => ({...values, city:false}));
+            setAlerts(values => ({...values, city: false}));
 
-        if (!number_pattern.test(infoInputs.phone.trim()) || infoInputs.phone.trim().length !== 10)
-            setAlerts(values => ({...values, phone:true}));
+
+        if (!number_pattern.test(infoInputs.phone.trim()) || infoInputs.phone.trim().length !== 10) {
+            setAlerts(values => ({...values, phone: true}));
+            alert = true;
+        }
         else
-            setAlerts(values => ({...values, phone:false}));
+            setAlerts(values => ({...values, phone: false}));
 
-        if(!(Object.values(alerts).some(alert => alert))){
+
+        if(!alert){
             let selectedIngredients = {};
             Object.keys(stateIngredientes.names).forEach(key => {
                 if (stateIngredientes.names[key]) {
@@ -93,8 +105,7 @@ function OrderPizzaForm(){
             })
                 .then(res => res.json())
                 .then(response => {
-                    initValuse();
-                    navigate("/");
+                    navigate("/order-summary");
                 })
                 .catch(error => {
                     console.error('Error:', error);
