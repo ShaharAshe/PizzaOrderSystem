@@ -93,7 +93,7 @@ function CheckPizzaCode({code, setCode}){
                         </Col>
                     )
                     :
-                    (<h2>Order Code not found!</h2>)}
+                    (<h2>Order Code not found!🙃</h2>)}
                 <Col>
                     <Row>
                         {Labels.details}
