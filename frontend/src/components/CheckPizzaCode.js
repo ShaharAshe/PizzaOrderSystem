@@ -16,13 +16,18 @@ function CheckPizzaCode({code, setCode}){
             navigate('/enter-code');
         }
         else {
-            fetch("/order/" + code, {
+            fetch("/order/id/" + code, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (res.ok)
+                        return res.json()
+                    else
+                        return Promise.reject(res.status);
+                })
                 .then(response => {
                     console.log("response", response)
                     let tempIngredientes = []
@@ -57,7 +62,7 @@ function CheckPizzaCode({code, setCode}){
                     setLabels(values => ({
                         ...values,
                         details: details,
-                        ingredientes: tempIngredientes
+                        ingredientes: <><Col className="border border-black text-center" xs={12}><p><b>Ingredientes:</b></p><ol>{tempIngredientes}</ol></Col></>
                     }));
                 })
                 .catch(error => {
@@ -72,28 +77,44 @@ function CheckPizzaCode({code, setCode}){
     return (
         <>
             <Row className="text-center">
-                <Col className="text-center" xs={12}>
-                    <h2>Order Summary</h2>
-                </Col>
+                {Object.keys(Labels).length?
+                (
+                    <Col className="text-center" xs={12}>
+                        <h2>Order Summary</h2>
+                    </Col>
+                )
+                :
+                ''}
                 <hr/>
-                <Col className="text-center" xs={12}>
-                    <p><b>Details:</b></p>
-                </Col>
+                {Object.keys(Labels).length?
+                    (
+                        <Col className="text-center" xs={12}>
+                            <p><b>Details:</b></p>
+                        </Col>
+                    )
+                    :
+                    (<h2>Order Code not found!</h2>)}
                 <Col>
                     <Row>
                         {Labels.details}
                     </Row>
                 </Col>
-                <Col className="border border-black text-center" xs={12}>
-                    <p><b>Ingredientes:</b></p>
-                    <ol>{Labels.ingredientes}</ol>
-                </Col>
+                {Labels.ingredientes}
             </Row>
             <br/>
             <Row>
-                <Col>
-                    <Link className="btn btn-primary" to="/">OK</Link>
-                </Col>
+                {Object.keys(Labels).length?
+                    (
+                        <Col>
+                            <Link className="btn btn-primary" to="/">OK</Link>
+                        </Col>
+                    )
+                    :
+                    (
+                        <Col>
+                            <Link className="btn btn-primary" to="/enter-code">Try again</Link>
+                        </Col>
+                    )}
             </Row>
             <br/>
         </>

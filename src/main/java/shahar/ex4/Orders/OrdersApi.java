@@ -1,5 +1,7 @@
 package shahar.ex4.Orders;
 
+
+import jakarta.servlet.http.Cookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,7 +23,7 @@ public class OrdersApi {
         return ResponseEntity.ok(OrderRepo.findLastOrder());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/id/{id}")
     public ResponseEntity<OrderData> getBook(@PathVariable final Long id) {
         OrderData b = OrderRepo.findOrderById(id);
         if (b == null) {

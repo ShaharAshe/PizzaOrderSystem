@@ -105,7 +105,18 @@ function OrderPizzaForm(){
             })
                 .then(res => res.json())
                 .then(response => {
-                    navigate("/order-summary");
+                    console.log("hey1");
+                    fetch("/cookies/set", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(orderData)
+                    }).then(res1 => res1.text())
+                        .then(response1 => {
+                            console.log("hey2");
+                            navigate("/order-summary");
+                        })
                 })
                 .catch(error => {
                     console.error('Error:', error);

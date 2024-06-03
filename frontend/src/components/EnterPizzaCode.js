@@ -35,6 +35,7 @@ function EnterPizzaCode({code, updateCode}){
                                 onChange={handleChange}
                                 className="form-control"
                                 placeholder="Enter An Order Code"
+                                min={0}
                             />
                         </div>
                         <br/>

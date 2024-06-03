@@ -9,6 +9,7 @@ import {PriceReducer} from "./PriceReducer";
 import {IngredientsReducer} from "./IngredientsReducer";
 import OrderSummary from "./OrderSummary";
 import EnterPizzaCode from "./EnterPizzaCode";
+import useInputs from "./useInputs";
 
 export const FormInputsContext = createContext(null);
 
@@ -16,15 +17,18 @@ function PizzaOrderRouteTable(){
     const [code, setCode] = useState();
     const [statePrice, dispatchPrice] = useReducer(PriceReducer, { price:55 });
     const [stateIngredientes, dispatchIngredientes] = useReducer(IngredientsReducer,{names:{}, count:0})
-    const [infoInputs, setInfoInputs] = useState({
-        firstName:"",
-        lastName:"",
-        street:"",
-        house:"",
-        number:"",
-        city:"",
-        phone:""
-    });
+    // const [infoInputs, setInfoInputs] = useState({
+    //     firstName:"",
+    //     lastName:"",
+    //     street:"",
+    //     house:"",
+    //     number:"",
+    //     city:"",
+    //     phone:""
+    // });
+
+    const [infoInputs, setInfoInputs] = useInputs();
+
     const [alerts, setAlerts] = useState({
         ingredients:false,
         firstName:false,

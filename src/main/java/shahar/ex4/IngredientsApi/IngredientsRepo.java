@@ -1,4 +1,4 @@
-package shahar.ex4.ingredientsApi;
+package shahar.ex4.IngredientsApi;
 
 import java.util.HashMap;
 
