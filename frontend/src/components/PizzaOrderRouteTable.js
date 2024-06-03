@@ -27,7 +27,15 @@ function PizzaOrderRouteTable(){
     //     phone:""
     // });
 
-    const [infoInputs, setInfoInputs] = useInputs();
+    const [infoInputs, setInfoInputs] = useInputs({
+        firstName:"",
+        lastName:"",
+        street:"",
+        house:"",
+        number:"",
+        city:"",
+        phone:""
+    });
 
     const [alerts, setAlerts] = useState({
         ingredients:false,

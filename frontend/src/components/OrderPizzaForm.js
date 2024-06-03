@@ -82,7 +82,7 @@ function OrderPizzaForm(){
             setAlerts(values => ({...values, phone: false}));
 
 
-        if(!alert){
+        if(!alert && stateIngredientes.count){
             let selectedIngredients = {};
             Object.keys(stateIngredientes.names).forEach(key => {
                 if (stateIngredientes.names[key]) {
