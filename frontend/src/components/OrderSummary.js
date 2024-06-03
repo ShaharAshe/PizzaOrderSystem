@@ -3,8 +3,8 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 
-function OrderSummary(){
-    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
+function OrderSummary({cart, updateCart}){
+    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice, countOrders, setCountOrders] = useContext(FormInputsContext);
     const [Labels, setLabels] = useState({});
     const navigate = useNavigate();
 
@@ -64,6 +64,12 @@ function OrderSummary(){
                     details:details,
                     ingredientes:tempIngredientes,
                     price:statePrice.price
+                }));
+                updateCart(values => ({
+                    ...values,
+                    [countOrders]:{
+                        response
+                    }
                 }));
             })
             .catch(error => {

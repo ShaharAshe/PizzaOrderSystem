@@ -5,7 +5,7 @@ import HeaderNavbar from "./HeaderNavbar";
  * Component for rendering the header of the application.
  * @returns {JSX.Element} - Rendered Header component.
  */
-function Header(){
+function Header({countOrders, updateCountOrders}){
     return(
         <>
             <Row className="text-center" style={{backgroundColor: 'lightgray'}}>
@@ -15,7 +15,7 @@ function Header(){
             </Row>
             <Row>
                 <Col>
-                    <HeaderNavbar/>
+                    <HeaderNavbar countOrders={countOrders} updateCountOrders={updateCountOrders}/>
                 </Col>
             </Row>
             <br/>

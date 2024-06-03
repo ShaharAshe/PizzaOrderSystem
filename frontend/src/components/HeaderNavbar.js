@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
-function HeaderNavbar(){
+function HeaderNavbar({countOrders, updateCountOrders}){
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
@@ -13,6 +13,13 @@ function HeaderNavbar(){
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Link className="btn" to="/">Home</Link>
+                        <Link className="btn position-relative" to="/cart">
+                            Cart
+                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {countOrders}
+                                <span className="visually-hidden">unread messages</span>
+                            </span>
+                        </Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

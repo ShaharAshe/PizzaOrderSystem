@@ -7,7 +7,7 @@ function OrderPizzaForm(){
     const Name_pattern = /^[a-zA-Z]+$/;
     const Address_pattern = /^[a-zA-Z0-9]+$/;
     const number_pattern = /^[0-9]+$/;
-    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
+    const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice, countOrders, setCountOrders] = useContext(FormInputsContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -105,7 +105,6 @@ function OrderPizzaForm(){
             })
                 .then(res => res.json())
                 .then(response => {
-                    console.log("hey1");
                     fetch("/cookies/set", {
                         method: 'POST',
                         headers: {
@@ -114,7 +113,7 @@ function OrderPizzaForm(){
                         body: JSON.stringify(orderData)
                     }).then(res1 => res1.text())
                         .then(response1 => {
-                            console.log("hey2");
+                            setCountOrders(values => values+1);
                             navigate("/order-summary");
                         })
                 })

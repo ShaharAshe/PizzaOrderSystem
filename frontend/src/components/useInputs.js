@@ -3,7 +3,6 @@ import {Col} from "react-bootstrap";
 
 function UseInputs(init){
     const [infoInputs, setInfoInputs] = useState(init);
-
     const [initialized, setInitialized] = useState(false);
     useEffect(() => {
         if(!initialized) {
