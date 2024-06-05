@@ -16,7 +16,7 @@ function HeaderNavbar({countOrders, updateCountOrders}){
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
             <Container>
-                <Navbar.Brand><Link to="/"><Image src={'\\images\\pizzaLogo.png'} alt="logo" style={{width:50,height:50}} fluid /></Link></Navbar.Brand>
+                <Navbar.Brand><Link to="/"><Image src={'/pizzaLogo.png'} alt="logo" style={{width:50,height:50}} fluid /></Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">

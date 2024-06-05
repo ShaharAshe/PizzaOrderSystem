@@ -61,7 +61,7 @@ function HomePage({initCookiesInputs}){
             <br/>
             <Row>
                 <Col>
-                    <img src={'\\images\\pizzaFirst.gif'} className="App-logo" alt="logo"/>
+                    <img src={'/pizzaFirst.gif'} className="App-logo" alt="logo"/>
                 </Col>
             </Row>
         </>
