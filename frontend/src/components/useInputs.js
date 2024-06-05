@@ -32,7 +32,11 @@ function UseInputs(init){
         setInitialized(true);
     }, [initialized]);
 
-    return [infoInputs, setInfoInputs];
+    const resetInfoInputs = () => {
+        setInfoInputs(init);
+    };
+
+    return [infoInputs, setInfoInputs, resetInfoInputs];
 }
 
 export default UseInputs;

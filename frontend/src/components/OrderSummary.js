@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 
-function OrderSummary({cart, updateCart}){
+function OrderSummary({cart, updateCart, lastOrder}){
     const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice, countOrders, setCountOrders] = useContext(FormInputsContext);
     const [Labels, setLabels] = useState({});
     const navigate = useNavigate();
@@ -25,56 +25,43 @@ function OrderSummary({cart, updateCart}){
 
         initValuse();
 
+        const details = Object.keys(lastOrder).map((key,index)=>{
+            if(key !== "ingredients")
+                return (key === "orderNumber"?
+                        (<Col key={key} className="bg-info border border-warning" xs={12}>
+                            <div>
+                                <p><b>{splitCamelCase(key)}:</b></p>
+                            </div>
+                            <div>
+                                <p>{lastOrder[key]}</p>
+                            </div>
+                        </Col>)
+                        :
+                        (<Col key={key} className="border border-black" xs={12}>
+                            <div>
+                                <p><b>{splitCamelCase(key)}:</b></p>
+                            </div>
+                            <div>
+                                <p>{lastOrder[key]}</p>
+                            </div>
+                        </Col>)
 
-        fetch("/order/last", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+                    )
+        });
+        setLabels(values => [])
+        setLabels(values => ({
+            ...values,
+            details:details,
+            ingredientes:tempIngredientes,
+            price:statePrice.price
+        }));
+        updateCart(values => ({
+            ...values,
+            [countOrders]:{
+                lastOrder
             }
-        })
-            .then(res => res.json())
-            .then(response => {
-                console.log("response",response)
-                const details = Object.keys(response).map((key,index)=>{
-                    if(key !== "ingredients")
-                        return (key === "orderNumber"?
-                                (<Col key={key} className="bg-info border border-warning" xs={12}>
-                                    <div>
-                                        <p><b>{splitCamelCase(key)}:</b></p>
-                                    </div>
-                                    <div>
-                                        <p>{response[key]}</p>
-                                    </div>
-                                </Col>)
-                                :
-                                (<Col key={key} className="border border-black" xs={12}>
-                                    <div>
-                                        <p><b>{splitCamelCase(key)}:</b></p>
-                                    </div>
-                                    <div>
-                                        <p>{response[key]}</p>
-                                    </div>
-                                </Col>)
-
-                            )
-                });
-                setLabels(values => [])
-                setLabels(values => ({
-                    ...values,
-                    details:details,
-                    ingredientes:tempIngredientes,
-                    price:statePrice.price
-                }));
-                updateCart(values => ({
-                    ...values,
-                    [countOrders]:{
-                        response
-                    }
-                }));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        }));
+        console.log("cart",cart)
     }, []);
     return (
         <>

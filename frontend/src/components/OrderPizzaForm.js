@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 
-function OrderPizzaForm(){
+function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
     const Name_pattern = /^[a-zA-Z]+$/;
     const Address_pattern = /^[a-zA-Z0-9]+$/;
     const number_pattern = /^[0-9]+$/;
@@ -12,7 +12,7 @@ function OrderPizzaForm(){
 
     useEffect(() => {
         if (!stateIngredientes.count)
-            navigate("/")
+            navigate("/build")
     }, []);
 
     const handleChange = (event) => {
@@ -105,17 +105,9 @@ function OrderPizzaForm(){
             })
                 .then(res => res.json())
                 .then(response => {
-                    fetch("/cookies/set", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(orderData)
-                    }).then(res1 => res1.text())
-                        .then(response1 => {
-                            setCountOrders(values => values+1);
-                            navigate("/order-summary");
-                        })
+                    updateLastOrder(response)
+                    setCountOrders(values => values+1);
+                    navigate("/order-summary");
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -327,8 +319,11 @@ function OrderPizzaForm(){
                         </Row>
                         <br/>
                         <Row>
-                            <Col>
-                                <Button variant="primary" type="submit">Order</Button>
+                            <Col xs={6}>
+                                <Button variant="success" type="submit">Order</Button>
+                            </Col>
+                            <Col xs={6}>
+                                <Button variant="primary" type="button" onClick={resetInfoInputs}>Reset</Button>
                             </Col>
                         </Row>
                     </form>

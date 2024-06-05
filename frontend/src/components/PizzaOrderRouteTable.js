@@ -15,12 +15,13 @@ import Cart from "./Cart";
 export const FormInputsContext = createContext(null);
 
 function PizzaOrderRouteTable(){
+    const [lastOrder, setLastOrder] = useState({});
     const [countOrders, setCountOrders] = useState(0);
     const [cart, setCart] = useState({});
     const [code, setCode] = useState();
     const [statePrice, dispatchPrice] = useReducer(PriceReducer, { price:55 });
     const [stateIngredientes, dispatchIngredientes] = useReducer(IngredientsReducer,{names:{}, count:0})
-    const [infoInputs, setInfoInputs] = useInputs({
+    const [infoInputs, setInfoInputs, resetInfoInputs] = useInputs({
         firstName:"",
         lastName:"",
         street:"",
@@ -62,8 +63,8 @@ function PizzaOrderRouteTable(){
                 <Routes>
                     <Route path="/" element={<HomePage />}/>
                     <Route path="/build" element={<PizzaBuild/>}/>
-                    <Route path="/your-info-order" element={<OrderPizzaForm/>} />
-                    <Route path="/order-summary" element={<OrderSummary cart={cart} updateCart={setCart}/>} />
+                    <Route path="/your-info-order" element={<OrderPizzaForm updateLastOrder={setLastOrder} resetInfoInputs={resetInfoInputs}/>} />
+                    <Route path="/order-summary" element={<OrderSummary cart={cart} updateCart={setCart} lastOrder={lastOrder}/>} />
                     <Route path="/enter-code" element={<EnterPizzaCode code={code} updateCode={setCode}/>} />
                     <Route path="/prevOrder" element={<CheckPizzaCode code={code} updateCode={setCode}/>}/>
                     <Route path="/cart" element={<Cart cart={cart} updateCart={setCart}/>}/>

@@ -6,9 +6,8 @@ function Cart({cart, updateCart}){
     const [inputCards, setInputCards] = useState([]);
 
     useEffect(() => {
-        console.log(cart)
         const tempCard = Object.keys(cart).map((key,index) => {
-            const order = cart[key].response;
+            const order = cart[key]?.lastOrder;
             const { orderNumber, ingredients, firstName, lastName, street, house, number, city, phone, price } = order;
             return (
                 <Col key={index++} xs={12}>

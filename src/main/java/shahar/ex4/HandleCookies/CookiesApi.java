@@ -14,30 +14,6 @@ import shahar.ex4.Orders.OrderRepo;
 @Controller
 @RequestMapping("/cookies")
 public class CookiesApi {
-    @PostMapping(value = "/set")
-    public ResponseEntity<String> setCookie(HttpServletResponse response) {
-        OrderData lastOrder = OrderRepo.findLastOrder();
-
-        assert lastOrder != null;
-        Cookie firstNameCookie = new Cookie("firstName", lastOrder.getFirstName());
-        Cookie lastNameCookie = new Cookie("lastName", lastOrder.getLastName());
-        Cookie streetCookie = new Cookie("street", lastOrder.getStreet());
-        Cookie houseCookie = new Cookie("house", lastOrder.getHouse());
-        Cookie numberCookie = new Cookie("number", lastOrder.getNumber());
-        Cookie cityCookie = new Cookie("city", lastOrder.getCity());
-        Cookie phoneCookie = new Cookie("phone", lastOrder.getPhone());
-
-        response.addCookie(firstNameCookie);
-        response.addCookie(lastNameCookie);
-        response.addCookie(streetCookie);
-        response.addCookie(houseCookie);
-        response.addCookie(numberCookie);
-        response.addCookie(cityCookie);
-        response.addCookie(phoneCookie);
-
-        return ResponseEntity.ok("Cookies have been set");
-    }
-
     @PostMapping(value = "/get")
     public ResponseEntity<?> getCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

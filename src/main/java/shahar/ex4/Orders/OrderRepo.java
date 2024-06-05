@@ -5,9 +5,11 @@ import java.util.*;
 public class OrderRepo {
     private static final List<OrderData> orderList = new ArrayList<>();
     private static Long ordeindex = 0L;
-    public static synchronized void addOrder(OrderData od) {
+    public static synchronized OrderData addOrder(OrderData od) {
         od.setOrderNumber(++ordeindex);
         orderList.add(od);
+
+        return orderList.get(orderList.size() - 1);
     }
 
     public static OrderData findOrderById(Long id) {

@@ -29,7 +29,6 @@ function CheckPizzaCode({code, setCode}){
                         return Promise.reject(res.status);
                 })
                 .then(response => {
-                    console.log("response", response)
                     let tempIngredientes = []
                     const details = Object.keys(response).map((key, index) => {
                         if (key !== "ingredients") {

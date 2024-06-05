@@ -10,8 +10,6 @@ function PizzaBuild(props){
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!Object.keys(stateIngredientes?.names).length)
-            navigate("/")
         let tempLst = []
 
         tempLst.push(
@@ -102,6 +100,7 @@ function PizzaBuild(props){
                     </form>
                 </Col>
             </Row>
+            <br/>
         </>
     );
 }
