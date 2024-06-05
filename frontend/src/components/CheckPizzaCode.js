@@ -3,14 +3,29 @@ import {Link, useNavigate} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 
+/**
+ * Component for checking a pizza order code.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.code - Current pizza order code.
+ * @param {Function} props.setCode - Function to set the pizza order code.
+ * @returns {JSX.Element} - Rendered CheckPizzaCode component.
+ */
 function CheckPizzaCode({code, setCode}){
     const [Labels, setLabels] = useState({});
     const [orderNumber, setOrderNumber] = useState(-1);
     const navigate = useNavigate();
 
+    /**
+     * Splits a camel case string and returns it with spaces.
+     *
+     * @param {string} str - Camel case string.
+     * @returns {string} - String with spaces between words.
+     */
     const splitCamelCase = (str) => {
         return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, function(str){ return str.toUpperCase(); });
     };
+
     useEffect(() => {
         if(!code) {
             navigate('/enter-code');
@@ -68,10 +83,6 @@ function CheckPizzaCode({code, setCode}){
                     console.error('Error:', error);
                 });
         }}, []);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-    }
 
     return (
         <>

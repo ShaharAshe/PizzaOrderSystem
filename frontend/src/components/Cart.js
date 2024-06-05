@@ -2,6 +2,14 @@ import {useEffect, useState} from "react";
 import {Col, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
+/**
+ * Component for rendering the cart.
+ *
+ * @param {Object} props - Component props.
+ * @param {Object} props.cart - Cart object containing order details.
+ * @param {Function} props.updateCart - Function to update the cart.
+ * @returns {JSX.Element} - Rendered Cart component.
+ */
 function Cart({cart, updateCart}){
     const [inputCards, setInputCards] = useState([]);
 
@@ -35,6 +43,7 @@ function Cart({cart, updateCart}){
         });
         setInputCards(tempCard)
     }, []);
+
     return (
         <Row>
             {inputCards.length?

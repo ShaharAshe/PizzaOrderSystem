@@ -3,6 +3,10 @@ import HeaderNavbar from "./HeaderNavbar";
 
 /**
  * Component for rendering the header of the application.
+ *
+ * @param {Object} props - Component props.
+ * @param {number} props.countOrders - Count of orders in the cart.
+ * @param {Function} props.updateCountOrders - Function to update the count of orders.
  * @returns {JSX.Element} - Rendered Header component.
  */
 function Header({countOrders, updateCountOrders}){

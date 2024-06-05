@@ -9,9 +9,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Controller class for handling orders.
+ */
 @Controller
 @RequestMapping("/order")
 public class OrdersApi {
+    /**
+     * Add order details to cookies.
+     *
+     * @param response   HttpServletResponse object.
+     * @param orderForm  OrderData object containing order details.
+     */
     private void addOrderCookies(HttpServletResponse response, OrderData orderForm) {
         addCookie(response, "firstName", orderForm.getFirstName());
         addCookie(response, "lastName", orderForm.getLastName());
@@ -22,11 +31,25 @@ public class OrdersApi {
         addCookie(response, "phone", orderForm.getPhone());
     }
 
+    /**
+     * Add a cookie to the HttpServletResponse object.
+     *
+     * @param response HttpServletResponse object.
+     * @param name     Name of the cookie.
+     * @param value    Value of the cookie.
+     */
     private void addCookie(HttpServletResponse response, String name, String value) {
         Cookie cookie = new Cookie(name, value);
         response.addCookie(cookie);
     }
 
+    /**
+     * Handle POST request to add a new order.
+     *
+     * @param orderForm OrderData object containing order details.
+     * @param response  HttpServletResponse object.
+     * @return ResponseEntity with the added order data.
+     */
     @PostMapping(value = "")
     public ResponseEntity<?> postController(@RequestBody OrderData orderForm, HttpServletResponse response) {
         System.out.println("POST received - serializing LoginForm: " + orderForm.toString());
@@ -34,11 +57,12 @@ public class OrdersApi {
         return ResponseEntity.ok(OrderRepo.addOrder(orderForm));
     }
 
-//    @PostMapping(value = "/last")
-//    public ResponseEntity<?> getLastOrder() {
-//        return ResponseEntity.ok(OrderRepo.findLastOrder());
-//    }
-
+    /**
+     * Handle GET request to retrieve order details by ID.
+     *
+     * @param id Order ID.
+     * @return ResponseEntity containing the order data.
+     */
     @GetMapping(value = "/id/{id}")
     public ResponseEntity<OrderData> getBook(@PathVariable final Long id) {
         OrderData b = OrderRepo.findOrderById(id);

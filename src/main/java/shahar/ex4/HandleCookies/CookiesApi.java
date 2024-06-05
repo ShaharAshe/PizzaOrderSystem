@@ -11,9 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import shahar.ex4.Orders.OrderData;
 import shahar.ex4.Orders.OrderRepo;
 
+/**
+ * Controller class for handling cookies.
+ */
 @Controller
 @RequestMapping("/cookies")
 public class CookiesApi {
+    /**
+     * Endpoint for retrieving cookies.
+     *
+     * @param request The HttpServletRequest object.
+     * @return ResponseEntity containing the cookies if found, otherwise a response indicating no cookies found.
+     */
     @PostMapping(value = "/get")
     public ResponseEntity<?> getCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();

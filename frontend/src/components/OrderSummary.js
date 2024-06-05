@@ -3,28 +3,50 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 
+/**
+ * Component for displaying the order summary.
+ * @param {Object} props - The component props.
+ * @param {Object} props.cart - The cart object.
+ * @param {Function} props.updateCart - Function to update the cart.
+ * @param {Object} props.lastOrder - The last order object.
+ * @returns {JSX.Element} - Rendered OrderSummary component.
+ */
 function OrderSummary({cart, updateCart, lastOrder}){
     const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice, countOrders, setCountOrders] = useContext(FormInputsContext);
     const [Labels, setLabels] = useState({});
     const navigate = useNavigate();
 
+    /**
+     * Initializes the ingredient and price values.
+     */
     const initValuse = ()=> {
         dispatchIngredientes({ type: 'INIT'});
         dispatchPrice({ type: 'INIT'});
     }
+
+    /**
+     * Splits a camel case string into words.
+     * @param {string} str - The camel case string.
+     * @returns {string} - The formatted string.
+     */
     const splitCamelCase = (str) => {
         return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, function(str){ return str.toUpperCase(); });
     };
+
     useEffect(() => {
+        // Map selected ingredients to list items
         const tempIngredientes = Object.keys(stateIngredientes.names).map(key => {
             if (stateIngredientes.names[key])
                 return <li key={key}>{key}</li>
         });
+
+        // Redirect to home page if no ingredients are selected
         if(!Object.keys(tempIngredientes).length)
             navigate('/')
 
         initValuse();
 
+        // Map order details to UI elements
         const details = Object.keys(lastOrder).map((key,index)=>{
             if(key !== "ingredients")
                 return (key === "orderNumber"?
@@ -48,6 +70,7 @@ function OrderSummary({cart, updateCart, lastOrder}){
 
                     )
         });
+        // Update state with order summary details
         setLabels(values => [])
         setLabels(values => ({
             ...values,
@@ -55,6 +78,8 @@ function OrderSummary({cart, updateCart, lastOrder}){
             ingredientes:tempIngredientes,
             price:statePrice.price
         }));
+
+        // Update cart with the latest order
         updateCart(values => ({
             ...values,
             [countOrders]:{

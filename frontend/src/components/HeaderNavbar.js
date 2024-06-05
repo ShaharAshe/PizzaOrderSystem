@@ -4,6 +4,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Image} from "react-bootstrap";
 import {Link} from "react-router-dom";
 
+/**
+ * Component for the header navigation bar.
+ *
+ * @param {Object} props - Component props.
+ * @param {number} props.countOrders - Count of orders in the cart.
+ * @param {Function} props.updateCountOrders - Function to update the count of orders.
+ * @returns {JSX.Element} Header navigation bar component.
+ */
 function HeaderNavbar({countOrders, updateCountOrders}){
     return (
         <Navbar expand="lg" className="bg-body-tertiary">

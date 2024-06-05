@@ -12,8 +12,13 @@ import EnterPizzaCode from "./EnterPizzaCode";
 import useInputs from "./useInputs";
 import Cart from "./Cart";
 
+// Create a context for form inputs
 export const FormInputsContext = createContext(null);
 
+/**
+ * Component defining the routes and main logic for the pizza order application.
+ * @returns {JSX.Element} - Rendered PizzaOrderRouteTable component.
+ */
 function PizzaOrderRouteTable(){
     const [lastOrder, setLastOrder] = useState({});
     const [countOrders, setCountOrders] = useState(0);
@@ -21,7 +26,7 @@ function PizzaOrderRouteTable(){
     const [code, setCode] = useState();
     const [statePrice, dispatchPrice] = useReducer(PriceReducer, { price:55 });
     const [stateIngredientes, dispatchIngredientes] = useReducer(IngredientsReducer,{names:{}, count:0})
-    const [infoInputs, setInfoInputs, resetInfoInputs] = useInputs({
+    const [infoInputs, setInfoInputs, resetInfoInputs, initCookiesInputs] = useInputs({
         firstName:"",
         lastName:"",
         street:"",
@@ -40,7 +45,9 @@ function PizzaOrderRouteTable(){
         number:false,
         city:false,
         phone:false
-    })
+    });
+
+    // Fetch ingredients from the server
     useEffect(() => {
         let tempIngredientes = {}
         fetch("/new-pizza", {method:'POST'})
@@ -61,7 +68,7 @@ function PizzaOrderRouteTable(){
                 <Header countOrders={countOrders} updateCountOrders={setCountOrders}/>
                 <FormInputsContext.Provider value={[infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice, countOrders, setCountOrders]}>
                 <Routes>
-                    <Route path="/" element={<HomePage />}/>
+                    <Route path="/" element={<HomePage initCookiesInputs={initCookiesInputs}/>}/>
                     <Route path="/build" element={<PizzaBuild/>}/>
                     <Route path="/your-info-order" element={<OrderPizzaForm updateLastOrder={setLastOrder} resetInfoInputs={resetInfoInputs}/>} />
                     <Route path="/order-summary" element={<OrderSummary cart={cart} updateCart={setCart} lastOrder={lastOrder}/>} />

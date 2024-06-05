@@ -3,12 +3,18 @@ import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Navigate, useNavigate} from "react-router-dom";
 
+/**
+ * Component for building a pizza, allowing users to select ingredients.
+ * @param {object} props - Component props.
+ * @returns {JSX.Element} - Rendered PizzaBuild component.
+ */
 function PizzaBuild(props){
     const [ingredientsNames, setIngredientsNames] = useState([]);
     const [ingredientsLst, setIngredientsLst] = useState([]);
     const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice] = useContext(FormInputsContext);
     const navigate = useNavigate();
 
+    // Effect to update ingredient list
     useEffect(() => {
         let tempLst = []
 
@@ -18,6 +24,7 @@ function PizzaBuild(props){
             </Col>
         );
 
+        // Dynamically create checkboxes for each ingredient
         Object.keys(stateIngredientes?.names).map((d,index) =>{
             setIngredientsNames([...ingredientsNames, d])
             tempLst.push(
@@ -47,24 +54,33 @@ function PizzaBuild(props){
         setIngredientsLst((ingredientsLst) => tempLst)
     }, [stateIngredientes]);
 
+    /**
+     * Handler for changing the state of ingredient checkboxes.
+     * @param {string} name - Name of the ingredient being selected/deselected.
+     */
     const handleChange = (name) => {
-        if(stateIngredientes.names[name]) {
+        if(stateIngredientes.names[name]) // If the ingredient is already selected, decrement the price
             dispatchPrice({type: 'DECREMENT'})
-        }
-        else{
+        else // If the ingredient is not selected, increment the price
             dispatchPrice({ type: 'INCREMENT' })
-        }
 
+        // Update the state to reflect the selected/deselected ingredient
         dispatchIngredientes({ type: 'INGREDIENT', payload: name });
     }
 
+    /**
+     * Handler for submitting the pizza build form.
+     * @param {Event} event - The form submission event.
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
         if(stateIngredientes.count >=2) {
+            // If at least 2 ingredients are selected, navigate to the next step
             navigate("/your-info-order");
+            // Clear any previous alert about insufficient ingredients
             setAlerts(values => ({...values, ingredients:false}));
         }
-        else
+        else // If less than 2 ingredients are selected, show an alert
             setAlerts(values => ({...values, ingredients:true}));
     }
 

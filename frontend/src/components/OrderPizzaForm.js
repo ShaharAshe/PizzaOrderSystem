@@ -4,6 +4,13 @@ import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
 import AlertForm from "./AlertForm";
 
+/**
+ * OrderPizzaForm component to collect user's order information.
+ *
+ * @param {function} updateLastOrder - Function to update the last order.
+ * @param {function} resetInfoInputs - Function to reset the form inputs.
+ * @returns {JSX.Element} OrderPizzaForm component.
+ */
 function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
     const Name_pattern = /^[a-zA-Z]+$/;
     const Address_pattern = /^[a-zA-Z0-9]+$/;
@@ -11,11 +18,17 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
     const [infoInputs, setInfoInputs, stateIngredientes, dispatchIngredientes, alerts, setAlerts, statePrice, dispatchPrice, countOrders, setCountOrders] = useContext(FormInputsContext);
     const navigate = useNavigate();
 
+    // Redirect to build page if no ingredients selected
     useEffect(() => {
         if (!stateIngredientes.count)
             navigate("/build")
     }, []);
 
+    /**
+     * Handles form input change event.
+     *
+     * @param {Event} event - Input change event.
+     */
     const handleChange = (event) => {
         const name = event.target.name.trim();
         let value = event.target.value.trim().toLowerCase();
@@ -23,6 +36,14 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
         setInfoInputs(values => ({...values, [name]: value}))
     }
 
+    /**
+     * Handles alerts for input fields.
+     *
+     * @param {RegExp} pattern - Regular expression pattern to match against the input.
+     * @param {string} Inputs - Input value to validate.
+     * @param {string} alertName - Name of the alert state to set.
+     * @param {Object} alert - Object to store alert status.
+     */
     const handleAlert = (pattern, Inputs, alertName, alert) => {
         if (!pattern.test(Inputs.trim())) {
             setAlerts(values => ({...values, [alertName]: true}));
@@ -32,10 +53,16 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
             setAlerts(values => ({...values, [alertName]:false}));
     }
 
+    /**
+     * Handles form submission event.
+     *
+     * @param {Event} event - Form submission event.
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
         let alert = {is_alert:false};
 
+        // Handle alert for each input field
         handleAlert(Name_pattern, infoInputs.firstName, "firstName", alert);
         handleAlert(Name_pattern, infoInputs.lastName, "lastName", alert);
         handleAlert(Address_pattern, infoInputs.street, "street", alert);
@@ -44,6 +71,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
         handleAlert(Name_pattern, infoInputs.city, "city", alert);
         handleAlert(number_pattern, infoInputs.phone, "phone", alert);
 
+        // If no alerts and ingredients selected, proceed to order placement
         if(!alert.is_alert && stateIngredientes.count){
             let selectedIngredients = {};
             Object.keys(stateIngredientes.names).forEach(key => {
@@ -58,6 +86,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                 price: statePrice.price
             };
 
+            // Send order data to the server
             fetch("/order", {
                 method: 'POST',
                 headers: {
