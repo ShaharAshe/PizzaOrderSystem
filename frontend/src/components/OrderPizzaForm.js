@@ -2,6 +2,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import {useContext, useEffect, useState} from "react";
 import {FormInputsContext} from "./PizzaOrderRouteTable";
 import {Link, useNavigate} from "react-router-dom";
+import AlertForm from "./AlertForm";
 
 function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
     const Name_pattern = /^[a-zA-Z]+$/;
@@ -22,67 +23,28 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
         setInfoInputs(values => ({...values, [name]: value}))
     }
 
+    const handleAlert = (pattern, Inputs, alertName, alert) => {
+        if (!pattern.test(Inputs.trim())) {
+            setAlerts(values => ({...values, [alertName]: true}));
+            alert.is_alert = true;
+        }
+        else
+            setAlerts(values => ({...values, [alertName]:false}));
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        let alert = false;
-        // Check Name
-        if (!Name_pattern.test(infoInputs.firstName.trim())) {
-            setAlerts(values => ({...values, firstName: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, firstName:false}));
+        let alert = {is_alert:false};
 
-        if (!Name_pattern.test(infoInputs.lastName.trim())) {
-            setAlerts(values => ({...values, lastName: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, lastName:false}));
+        handleAlert(Name_pattern, infoInputs.firstName, "firstName", alert);
+        handleAlert(Name_pattern, infoInputs.lastName, "lastName", alert);
+        handleAlert(Address_pattern, infoInputs.street, "street", alert);
+        handleAlert(Address_pattern, infoInputs.house, "house", alert);
+        handleAlert(number_pattern, infoInputs.number, "number", alert);
+        handleAlert(Name_pattern, infoInputs.city, "city", alert);
+        handleAlert(number_pattern, infoInputs.phone, "phone", alert);
 
-
-        // Check Address
-        if (!Address_pattern.test(infoInputs.street.trim())) {
-            setAlerts(values => ({...values, street: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, street: false}));
-
-
-        if (!Address_pattern.test(infoInputs.house.trim())) {
-            setAlerts(values => ({...values, house: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, house: false}));
-
-
-        if (!number_pattern.test(infoInputs.number.trim())) {
-            setAlerts(values => ({...values, number: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, number: false}));
-
-
-        if (!Name_pattern.test(infoInputs.city.trim())) {
-            setAlerts(values => ({...values, city: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, city: false}));
-
-
-        if (!number_pattern.test(infoInputs.phone.trim()) || infoInputs.phone.trim().length !== 10) {
-            setAlerts(values => ({...values, phone: true}));
-            alert = true;
-        }
-        else
-            setAlerts(values => ({...values, phone: false}));
-
-
-        if(!alert && stateIngredientes.count){
+        if(!alert.is_alert && stateIngredientes.count){
             let selectedIngredients = {};
             Object.keys(stateIngredientes.names).forEach(key => {
                 if (stateIngredientes.names[key]) {
@@ -146,16 +108,9 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         placeholder="Enter Your First name"
                                     />
                                 </div>
-                                {
-                                    alerts.firstName?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">First name must not be empty!
-                                                <div>It can only contain ONLY letters (A-Z or A-Z).</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.firstName}
+                                           msg={<>First name must not be empty!<div>It can only contain ONLY letters (A-Z or A-Z).</div></>}
+                                />
                             </Col>
                             <Col className="text-center" xs={6}>
                                 <div>
@@ -170,21 +125,12 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         placeholder="Enter Your Lasrt name"
                                     />
                                 </div>
-                                {
-                                    alerts.lastName?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">Last name must not be empty!
-                                                <div>It can only contain ONLY letters (A-Z or A-Z).</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.lastName}
+                                           msg={<>Last name must not be empty!<div>It can only contain ONLY letters (A-Z or A-Z).</div></>}
+                                />
                             </Col>
                         </Row>
                         <br/>
-
-                        {/* Address */}
                         <Row>
                             <Col className="text-center" xs={12}>
                                 <p>Address</p>
@@ -202,16 +148,9 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         placeholder="Your Street"
                                     />
                                 </div>
-                                {
-                                    alerts.street?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">Street must not be empty!
-                                                <div>It can only contain ONLY words (A-Z or A-Z and 0-9).</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.street}
+                                           msg={<>Street must not be empty!<div>It can only contain ONLY words (A-Z or A-Z and 0-9).</div></>}
+                                />
                             </Col>
                             <Col className="text-center" xs={3}>
                                 <div>
@@ -226,16 +165,9 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         placeholder="House"
                                     />
                                 </div>
-                                {
-                                    alerts.house?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">House must not be empty!
-                                                <div>It can only contain ONLY words (A-Z or A-Z and 0-9).</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.house}
+                                           msg={<>House must not be empty!<div>It can only contain ONLY words (A-Z or A-Z and 0-9).</div></>}
+                                />
                             </Col>
                             <Col className="text-center" xs={3}>
                                 <div>
@@ -251,16 +183,9 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         min={1}
                                     />
                                 </div>
-                                {
-                                    alerts.number?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">Number must not be empty!
-                                                <div>It can only contain ONLY numbers (0-9).</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.number}
+                                           msg={<>Number must not be empty!<div>It can only contain ONLY numbers (0-9).</div></>}
+                                />
                             </Col>
                             <Col className="text-center" xs={3}>
                                 <div>
@@ -275,21 +200,12 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         placeholder="Your City"
                                     />
                                 </div>
-                                {
-                                    alerts.city?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">city must not be empty!
-                                                <div>It can only contain ONLY letters (A-Z or A-Z).</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.city}
+                                           msg={<>city must not be empty!<div>It can only contain ONLY letters (A-Z or A-Z).</div></>}
+                                />
                             </Col>
                         </Row>
                         <br/>
-
-                        {/* phone number */}
                         <Row>
                             <Col className="text-center" xs={12}>
                                 <div>
@@ -304,17 +220,9 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                         placeholder="Your Phone Number"
                                     />
                                 </div>
-                                {
-                                    alerts.phone?
-                                        (
-                                            <div className="bad-val-fu alert alert-danger">Phone must not be empty!
-                                                <div>It can only contain ONLY numbers (0-9).</div>
-                                                <div>You need to enter 10 numbers for a phone number.</div>
-                                            </div>
-                                        )
-                                        :
-                                        ""
-                                }
+                                <AlertForm isAlert={alerts.phone}
+                                           msg={<>Phone must not be empty!<div>It can only contain ONLY numbers (0-9).</div><div>You need to enter 10 numbers for a phone number.</div></>}
+                                />
                             </Col>
                         </Row>
                         <br/>
