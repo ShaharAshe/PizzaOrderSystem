@@ -115,9 +115,14 @@ function CheckPizzaCode({code, setCode}){
             <Row>
                 {Object.keys(Labels).length?
                     (
-                        <Col>
-                            <Link className="btn btn-primary" to="/">OK</Link>
-                        </Col>
+                        <>
+                            <Col xs={12} md={6}>
+                                <Link className="btn btn-primary" to="/">OK</Link>
+                            </Col>
+                            <Col xs={12} md={6}>
+                                <Link className="btn btn-success" to="/enter-code">Search more</Link>
+                            </Col>
+                        </>
                     )
                     :
                     (

@@ -122,9 +122,8 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
             <Row>
                 <Col>
                     <form method="post" action="#" onSubmit={handleSubmit}>
-                        {/* Name */}
                         <Row>
-                            <Col className="text-center" xs={6}>
+                            <Col className="text-center" xs={12} md={6}>
                                 <div>
                                     <label htmlFor="firstName" className="form-label">Your first name:</label>
                                     <input
@@ -141,7 +140,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                            msg={<>First name must not be empty!<div>It can only contain ONLY letters (A-Z or A-Z).</div></>}
                                 />
                             </Col>
-                            <Col className="text-center" xs={6}>
+                            <Col className="text-center" xs={12} md={6}>
                                 <div>
                                     <label htmlFor="lastName" className="form-label">Your last name:</label>
                                     <input
@@ -164,7 +163,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                             <Col className="text-center" xs={12}>
                                 <p>Address</p>
                             </Col>
-                            <Col className="text-center" xs={3}>
+                            <Col className="text-center" xs={12} md={3}>
                                 <div>
                                     <label htmlFor="street" className="form-label">Your street:</label>
                                     <input
@@ -181,7 +180,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                            msg={<>Street must not be empty!<div>It can only contain ONLY words (A-Z or A-Z and 0-9).</div></>}
                                 />
                             </Col>
-                            <Col className="text-center" xs={3}>
+                            <Col className="text-center" xs={12} md={3}>
                                 <div>
                                     <label htmlFor="house" className="form-label">house:</label>
                                     <input
@@ -198,7 +197,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                            msg={<>House must not be empty!<div>It can only contain ONLY words (A-Z or A-Z and 0-9).</div></>}
                                 />
                             </Col>
-                            <Col className="text-center" xs={3}>
+                            <Col className="text-center" xs={12} md={3}>
                                 <div>
                                     <label htmlFor="number" className="form-label">number:</label>
                                     <input
@@ -216,7 +215,7 @@ function OrderPizzaForm({updateLastOrder, resetInfoInputs}){
                                            msg={<>Number must not be empty!<div>It can only contain ONLY numbers (0-9).</div></>}
                                 />
                             </Col>
-                            <Col className="text-center" xs={3}>
+                            <Col className="text-center" xs={12} md={3}>
                                 <div>
                                     <label htmlFor="city" className="form-label">Your city:</label>
                                     <input
