@@ -11,6 +11,7 @@ import OrderSummary from "./OrderSummary";
 import EnterPizzaCode from "./EnterPizzaCode";
 import useInputs from "./useInputs";
 import Cart from "./Cart";
+import ErrorPage from "./ErrorPage";
 
 // Create a context for form inputs
 export const FormInputsContext = createContext(null);
@@ -75,6 +76,7 @@ function PizzaOrderRouteTable(){
                     <Route path="/enter-code" element={<EnterPizzaCode code={code} updateCode={setCode}/>} />
                     <Route path="/prevOrder" element={<CheckPizzaCode code={code} updateCode={setCode}/>}/>
                     <Route path="/cart" element={<Cart cart={cart} updateCart={setCart}/>}/>
+                    <Route path="*" element={<ErrorPage />} />
                 </Routes>
                 </FormInputsContext.Provider>
             </BrowserRouter>
